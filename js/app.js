@@ -105,10 +105,8 @@ Player.prototype.declarevictory = function() {
     console.log("victory");
     confirm("Victory! You died " + this.death_toll + "times.");
     this.death_toll = 0;
-    global.start_game();
+    start_game();
 }
-
-
 
 
 Player.prototype.selectcharacter = function(e){

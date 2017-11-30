@@ -13,7 +13,6 @@
  * writing app.js a little simpler to work with.
  */
 var start_game = function(){
-    Engine.start_game;
 }
 
 var Engine = (function(global) {
@@ -43,7 +42,7 @@ var Engine = (function(global) {
     }
 
     
-    var start_game = function(){
+    start_game = function(){
         console.log('starting');
         document.getElementById("title").innerHTML = "Number of Deaths: 0";
         document.getElementById("intro").innerHTML = null;
