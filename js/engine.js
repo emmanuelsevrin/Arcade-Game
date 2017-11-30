@@ -12,6 +12,9 @@
  * This engine makes the canvas' context (ctx) object globally available to make 
  * writing app.js a little simpler to work with.
  */
+var start_game = function(){
+    Engine.start_game;
+}
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -40,7 +43,7 @@ var Engine = (function(global) {
     }
 
     
-    function start_game(){
+    var start_game = function(){
         console.log('starting');
         document.getElementById("title").innerHTML = "Number of Deaths: 0";
         document.getElementById("intro").innerHTML = null;
