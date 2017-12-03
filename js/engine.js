@@ -2,18 +2,10 @@
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
- *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
- * This engine makes the canvas' context (ctx) object globally available to make 
- * writing app.js a little simpler to work with.
  */
-var start_game = function(){
-}
+
+//Restart_game enable us to restart the game. Declaring it as a global variable to be able to call it from app.js as well. The exact content of the function is defined within Engine
+var restart_game 
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -32,16 +24,7 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-
-    /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
-     */
-    function init() {
-        request_hero_selection();
-    }
-
-    
+    //
     start_game = function(){
         console.log('starting');
         document.getElementById("title").innerHTML = "Number of Deaths: 0";
@@ -50,8 +33,13 @@ var Engine = (function(global) {
         main();
     }
 
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
+    //function used to restart the game after the player won
+    restart_game = function(){
+        console.log('restarting')
+        start_game();
+    }
+
+    /* This function handles the character selection at the beginning of the game
      */
     function request_hero_selection(){
 
@@ -66,16 +54,17 @@ var Engine = (function(global) {
 
         console.log('loading players');
 
+        document.getElementById("title").innerHTML = "Choose your hero !";
+        document.getElementById("intro").innerHTML = "Press 1 for the boy, 2 for the cat girl, 3 for the girl with horns, and 4 for the girl in pink";
+
         for(col = 0; col<number_of_heroes; col++) {
-            document.getElementById("title").innerHTML = "Choose your hero !";
-            document.getElementById("intro").innerHTML = "Press 1 for the boy, 2 for the cat girl, 3 for the girl with horns, and 4 for the girl in pink";
             ctx.drawImage(Resources.get(hero_set[col]), 10 + col*120, 50);
         }
     }
 
+    //this function enables the selection of a character by translating the input into character selection
     function selectcharacter(e){
         if(e=== 'one'){
-            console.log('creating player');
             player.sprite = 'images/char-boy.png';
         }
         if(e==='two'){
@@ -91,7 +80,7 @@ var Engine = (function(global) {
     }
 
 
-
+//event listening listening to all keyboard plays
     document.addEventListener('keyup', function(e) {
         var allowedKeys_move = {
            37: 'left',
@@ -146,19 +135,6 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
-
-
-
-    // function change_keyboard_function(){
-    //     document.addEventListener('keyup', function(e) {
-    //         var allowedKeys = {
-
-    //         };
-
-    //         player.handleInput(allowedKeys[e.keyCode]);
-    //     });
-    // }
-
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -170,7 +146,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -259,7 +234,7 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
     ]);
 
-    Resources.onReady(init);
+    Resources.onReady(request_hero_selection);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily

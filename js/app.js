@@ -1,6 +1,4 @@
-// Enemies our player must avoid
-
-let collision_limit = 40; // distance (in pixel) required to declare a colision
+var collision_limit = 40; // distance (in pixel) required to declare a colision
 
 //enemy class definition
 var Enemy = function() {
@@ -10,7 +8,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 }
 
-//returns a random position on the route: it can be either on the 1st row, 2nd row or 3rd row
+//returns a random position on the route: it can be either on the 1st row, 2nd row or 3rd row. Useful for enemies appearance
 var RandomPositionOnRoute = function() {
     return 50 + 85*(Math.floor(Math.random()*3));
 }
@@ -20,7 +18,7 @@ var RandomSpeed = function() {
     return 1+Math.random()*3
 }
 
-// Update the enemy's position
+// Update the enemy's position after dt
 Enemy.prototype.update = function(dt) {
     this.x = this.x + 100*dt*this.speed;
     this.render();
@@ -29,7 +27,7 @@ Enemy.prototype.update = function(dt) {
     }
 }
 
-//restart the enemy (for when it has crossed the road) 
+//restart the enemy (for when it has fully crossed the road) 
 Enemy.prototype.restart = function() {
     this.x = 0;
     this.y = RandomPositionOnRoute();
@@ -45,10 +43,8 @@ Enemy.prototype.restart = function() {
 //Player class definition
  var Player = function(){
      this.x = 200;
-     this.y = 300;
+     this.y = 400;
      this.death_toll = 0; // number of times the player died
-     this.sprite = 'images/char-boy.png';
-
 }
 
 //Render the player on the screen
@@ -76,15 +72,15 @@ Player.prototype.checkcollision = function(){
 //restart the player position
 Player.prototype.collision = function() {
     this.x = 200;
-    this.y = 300;
+    this.y = 400;
     player.death_toll = player.death_toll+1;
     document.getElementById("title").innerHTML = "Number of Deaths:" + this.death_toll;
 }
 
-
+//handles the keyboard pressing to move the player
 Player.prototype.handleInput = function(turn) {
-    console.log(this.x);
-    if(turn === 'up' & this.y === 45){
+    console.log(this.y);
+    if(turn === 'up' & this.y === 60){
         this.declarevictory();
     }
     if(turn === 'left' & this.x > 0){
@@ -101,41 +97,22 @@ Player.prototype.handleInput = function(turn) {
     }
 }
 
+//handles the event of a victory (when the players reaches the top layer of the game); restart the death toll counter and restart game
 Player.prototype.declarevictory = function() {
     console.log("victory");
     confirm("Victory! You died " + this.death_toll + "times.");
     this.death_toll = 0;
-    start_game();
+    this.x = 200;
+    this.y = 400;
+    restart_game();
 }
 
+//declare the enemies and the player
 
-Player.prototype.selectcharacter = function(e){
-    if(e=== 'one'){
-        console.log('creating player');
-        this.sprite = 'images/char-boy.png';
-    }
-    if(e==='two'){
-        this.sprite = 'images/char-cat-girl.png';
-    }
-    if(e==='three'){
-        this.sprite = 'images/char-horn-girl.png';
-    }
-    if(e==='four'){
-        this.sprite = 'images/char-pink-girl.png';
-    }
-}
+enemy1 = new Enemy;
+enemy2 = new Enemy;
+enemy3 = new Enemy;
+enemy4 = new Enemy;
 
-    
-    enemy1 = new Enemy;
-    enemy2 = new Enemy;
-    enemy3 = new Enemy;
-    enemy4 = new Enemy;
-
-    allEnemies = [enemy1, enemy2, enemy3, enemy4];
-    player = new Player();
-    
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-
+allEnemies = [enemy1, enemy2, enemy3, enemy4];
+player = new Player();
